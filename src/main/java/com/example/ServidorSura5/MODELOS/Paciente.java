@@ -8,7 +8,6 @@ import java.util.List;
 
 @Entity //anotación, palabra reservada
 @Table(name="pacientes")
-
 public class Paciente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,8 +34,7 @@ public class Paciente {
     @JsonManagedReference
     private List<SignoVital> signosVitales;
 
-    public Paciente()
-    {
+    public Paciente(){
     }
 
     public Paciente(long id, String nombre, LocalDate anioNacimiento, String ciudad, String correo, String telefono, String ips, Boolean poliza, String grupoIngresos, LocalDate fechaAfiliacion) {
