@@ -4,8 +4,8 @@ import com.example.ServidorSura5.MODELOS.Paciente;
 import com.example.ServidorSura5.REPOSITORIOS.IRepositorioPaciente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServicioPaciente {
@@ -28,6 +28,22 @@ public class ServicioPaciente {
             return iRepositorioPaciente.findAll();
         }catch (Exception exception){
             throw new Exception(exception.getMessage());
+        }
     }
-}
+
+    public Optional<Paciente> buscarPaciente(long id) throws Exception{
+        try{
+            return iRepositorioPaciente.findById(id);
+        } catch (Exception exception) {
+            throw new Exception(exception.getMessage());
+        }
+    }
+
+    public void eliminarPaciente(long id) throws Exception{
+        try{
+            iRepositorioPaciente.deleteById(id);
+        } catch (Exception exception) {
+            throw new Exception(exception.getMessage());
+        }
+    }
 }
