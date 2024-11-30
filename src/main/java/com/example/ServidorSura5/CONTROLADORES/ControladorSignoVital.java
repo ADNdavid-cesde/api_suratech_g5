@@ -8,14 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/signovital")
+@RequestMapping("/api/signoVital")
 public class ControladorSignoVital {
     @Autowired
     ServicioSignoVital servicioSignoVital;
 
     @PostMapping
-    public ResponseEntity<?> guardar(@RequestBody SignoVital datos){
-        try{
+    public ResponseEntity<?> guardar(@RequestBody SignoVital datos) {
+        try {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(servicioSignoVital.guardarSignoVital(datos));
@@ -27,11 +27,70 @@ public class ControladorSignoVital {
     }
 
     @GetMapping //get = traer / obtener
-    public ResponseEntity<?> obtener(){
-        try{
+    public ResponseEntity<?> obtenerTodos() {
+        try {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(servicioSignoVital.buscarSignosVitales());
+        } catch (Exception exception) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(exception.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerSignoVital(@PathVariable long id) {
+        try {
+            if (servicioSignoVital.signoVitalExiste(id)) {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(servicioSignoVital.buscarSignoVital(id));
+            } else {
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body("No se ha encontrado el signo vital con el id " + id);
+            }
+        } catch (Exception exception) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(exception.getMessage());
+
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable long id) {
+        try {
+            if (servicioSignoVital.signoVitalExiste(id)) {
+                servicioSignoVital.eliminarSignoVital(id);
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body("Signo vital eliminado Exitosamente");
+            } else {
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body("No se ha encontrado el signo vital con el id " + id);
+            }
+        } catch (Exception exception) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(exception.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizar(@RequestBody SignoVital datos, @PathVariable long id) {
+        try {
+            if (servicioSignoVital.signoVitalExiste(id)) {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(servicioSignoVital.editarSignoVital(datos, id));
+            } else {
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body("No se ha encontrado el signo vital con el id " + id);
+            }
         } catch (Exception exception) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

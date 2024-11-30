@@ -14,8 +14,8 @@ public class ControladorPaciente {
     ServicioPaciente servicioPaciente;
 
     @PostMapping //post=guardar
-    public ResponseEntity<?> guardar(@RequestBody Paciente datos){
-        try{
+    public ResponseEntity<?> guardar(@RequestBody Paciente datos) {
+        try {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(servicioPaciente.guardarPaciente(datos));
@@ -27,8 +27,8 @@ public class ControladorPaciente {
     }
 
     @GetMapping //get = traer / obtener
-    public ResponseEntity<?> obtenerTodos(){
-        try{
+    public ResponseEntity<?> obtenerTodos() {
+        try {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(servicioPaciente.buscarPacientes());
@@ -39,44 +39,62 @@ public class ControladorPaciente {
         }
     }
 
-    /*@GetMapping("/{id}")
-    public ResponseEntity<?> obtenerPaciente(@PathVariable long id){
-        try{
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerPaciente(@PathVariable long id) {
+        try {
+            if (servicioPaciente.pacienteExiste(id)) {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(servicioPaciente.buscarPaciente(id));
+            } else {
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body("No se ha encontrado el paciente con el id " + id);
+            }
+        } catch (Exception exception) {
             return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(servicioPaciente.buscarPaciente( id ) );
-        }catch (Exception exception){
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(exception.getMessage() );
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(exception.getMessage());
 
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminar(@PathVariable long id){
-        try{
-            servicioPaciente.buscarPaciente(id);
-            servicioPaciente.eliminarPaciente(id);
-            return ResponseEntity.status(HttpStatus.OK);
-        }catch (Exception exception){
+    public ResponseEntity<?> eliminar(@PathVariable long id) {
+        try {
+            if (servicioPaciente.pacienteExiste(id)) {
+                servicioPaciente.eliminarPaciente(id);
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body("Paciente eliminado Exitosamente");
+            } else {
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body("No se ha encontrado el paciente con el id " + id);
+            }
+        } catch (Exception exception) {
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(exception.getMessage() );
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(exception.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizar(@RequestBody Paciente datos, @PathVariable long id){
-        try{
-
+    public ResponseEntity<?> actualizar(@RequestBody Paciente datos, @PathVariable long id) {
+        try {
+            if (servicioPaciente.pacienteExiste(id)) {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(servicioPaciente.editarPaciente(datos, id));
+            } else {
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body("No se ha encontrado el paciente con el id " + id);
+            }
+        } catch (Exception exception) {
             return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(servicioPaciente.guardarPaciente(datos) );
-        }catch (Exception exception){
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(exception.getMessage() );
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(exception.getMessage());
         }
-    }*/
+    }
 }
