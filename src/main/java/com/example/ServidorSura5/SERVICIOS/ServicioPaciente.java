@@ -56,7 +56,7 @@ public class ServicioPaciente {
                         paciente.setCiudad(datosPaciente.getCiudad());
                         paciente.setCorreo(datosPaciente.getCorreo());
                         paciente.setTelefono(datosPaciente.getTelefono());
-                        paciente.setIps(datosPaciente.getTelefono());
+                        paciente.setIps(datosPaciente.getIps());
                         paciente.setPoliza(datosPaciente.getPoliza());
                         paciente.setGrupoIngresos(datosPaciente.getGrupoIngresos());
                         paciente.setFechaAfiliacion(datosPaciente.getFechaAfiliacion());
